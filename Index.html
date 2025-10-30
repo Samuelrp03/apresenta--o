@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÉLITE - Escolha seu Estilo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000000;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(220,20,60,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(212,175,55,0.1) 0%, transparent 50%);
+            animation: bgPulse 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: clamp(20px, 5vw, 40px);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 0.1em;
+            margin-bottom: clamp(15px, 3vw, 20px);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            color: #F5F5F5;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: clamp(40px, 8vw, 60px);
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+            padding: 0 10px;
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+            gap: clamp(30px, 6vw, 50px);
+            margin-top: clamp(30px, 8vw, 60px);
+        }
+
+        .theme-card {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            padding: clamp(40px, 8vw, 60px) clamp(25px, 5vw, 40px);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .theme-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .theme-card.gold::before {
+            background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.2) 100%);
+        }
+
+        .theme-card.red::before {
+            background: linear-gradient(135deg, rgba(220,20,60,0.1) 0%, rgba(220,20,60,0.2) 100%);
+        }
+
+        .theme-card:hover::before,
+        .theme-card:active::before {
+            opacity: 1;
+        }
+
+        .theme-card.gold {
+            border-color: rgba(212,175,55,0.3);
+        }
+
+        .theme-card.red {
+            border-color: rgba(220,20,60,0.3);
+        }
+
+        .theme-card:hover,
+        .theme-card:active {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-card.gold:hover,
+        .theme-card.gold:active {
+            border-color: #D4AF37;
+            box-shadow: 0 20px 60px rgba(212,175,55,0.3);
+        }
+
+        .theme-card.red:hover,
+        .theme-card.red:active {
+            border-color: #DC143C;
+            box-shadow: 0 20px 60px rgba(220,20,60,0.3);
+        }
+
+        .theme-icon {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin-bottom: clamp(20px, 5vw, 30px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-card.gold .theme-icon {
+            color: #D4AF37;
+        }
+
+        .theme-card.red .theme-icon {
+            color: #DC143C;
+        }
+
+        .theme-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-card.gold .theme-title {
+            color: #D4AF37;
+        }
+
+        .theme-card.red .theme-title {
+            color: #DC143C;
+        }
+
+        .theme-description {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: #CCCCCC;
+            line-height: 1.8;
+            margin-bottom: clamp(25px, 5vw, 35px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-btn {
+            display: inline-block;
+            padding: clamp(14px, 3vw, 18px) clamp(35px, 7vw, 50px);
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            border: 2px solid;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .theme-card.gold .theme-btn {
+            background: #D4AF37;
+            color: #000000;
+            border-color: #D4AF37;
+        }
+
+        .theme-card.red .theme-btn {
+            background: #DC143C;
+            color: #FFFFFF;
+            border-color: #DC143C;
+        }
+
+        .theme-card.gold .theme-btn:hover,
+        .theme-card.gold .theme-btn:active {
+            background: #B8860B;
+            border-color: #B8860B;
+            box-shadow: 0 8px 25px rgba(212,175,55,0.4);
+            transform: translateY(-3px);
+        }
+
+        .theme-card.red .theme-btn:hover,
+        .theme-card.red .theme-btn:active {
+            background: #B91C1C;
+            border-color: #B91C1C;
+            box-shadow: 0 8px 25px rgba(220,20,60,0.4);
+            transform: translateY(-3px);
+        }
+
+        .features {
+            margin: clamp(20px, 4vw, 25px) 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #999;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .feature-item::before {
+            content: '◆';
+            font-size: 0.7rem;
+        }
+
+        .theme-card.gold .feature-item::before {
+            color: #D4AF37;
+        }
+
+        .theme-card.red .feature-item::before {
+            color: #DC143C;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Color Preview Bars */
+        .color-preview {
+            display: flex;
+            height: clamp(6px, 1.5vw, 8px);
+            margin: clamp(20px, 4vw, 30px) 0 clamp(15px, 3vw, 20px);
+            gap: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .color-bar {
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .theme-card.gold .color-bar:nth-child(1) { background: #000000; }
+        .theme-card.gold .color-bar:nth-child(2) { background: #D4AF37; }
+        .theme-card.gold .color-bar:nth-child(3) { background: #FFFFFF; }
+
+        .theme-card.red .color-bar:nth-child(1) { background: #000000; }
+        .theme-card.red .color-bar:nth-child(2) { background: #DC143C; }
+        .theme-card.red .color-bar:nth-child(3) { background: #FFFFFF; }
+
+        .theme-card:hover .color-bar {
+            height: clamp(8px, 2vw, 12px);
+        }
+
+        /* Tablet adjustments */
+        @media (max-width: 768px) and (min-width: 481px) {
+            .theme-selector {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .theme-card {
+                padding: 50px 35px;
+            }
+        }
+
+        /* Mobile specific */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .theme-selector {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .theme-card {
+                padding: 35px 25px;
+            }
+
+            .subtitle {
+                letter-spacing: 0.1em;
+            }
+
+            .theme-btn {
+                letter-spacing: 0.1em;
+            }
+
+            .feature-item {
+                font-size: 0.85rem;
+            }
+
+            .theme-card:active {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 600px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .logo {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                margin-bottom: 20px;
+            }
+
+            .theme-selector {
+                margin-top: 20px;
+                gap: 20px;
+            }
+
+            .theme-card {
+                padding: 30px 25px;
+            }
+
+            .theme-icon {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+
+            .features {
+                margin: 15px 0;
+            }
+
+            .feature-item {
+                margin: 5px 0;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .theme-title {
+                font-size: 1.6rem;
+            }
+
+            .theme-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="container">
+        <h1 class="logo">ÉLITE</h1>
+        <p class="subtitle">Escolha sua experiência de luxo</p>
+
+        <div class="theme-selector">
+            <!-- Gold Theme -->
+            <div class="theme-card gold" onclick="loadTheme('gold')">
+                <div class="theme-icon">◆</div>
+                <h2 class="theme-title">Dourado</h2>
+                <div class="color-preview">
+                    <div class="color-bar"></div>
+                    <div class="color-bar"></div>
+                    <div class="color-bar"></div>
+                </div>
+                <p class="theme-description">
+                    Elegância clássica e sofisticação atemporal. Perfeito para transmitir luxo, prestígio e exclusividade.
+                </p>
+                <div class="features">
+                    <div class="feature-item">Luxo & Exclusividade</div>
+                    <div class="feature-item">Elegância Atemporal</div>
+                    <div class="feature-item">Prestígio Premium</div>
+                </div>
+                <a href="./Gold.html" class="theme-btn" onclick="loadTheme('gold'); return false;">Explorar Dourado</a>
+            </div>
+
+            <!-- Red Theme -->
+            <div class="theme-card red" onclick="loadTheme('red')">
+                <div class="theme-icon">♔</div>
+                <h2 class="theme-title">Vermelho</h2>
+                <div class="color-preview">
+                    <div class="color-bar"></div>
+                    <div class="color-bar"></div>
+                    <div class="color-bar"></div>
+                </div>
+                <p class="theme-description">
+                    Paixão intensa e energia vibrante. Ideal para marcas que querem transmitir força, ousadia e impacto.
+                </p>
+                <div class="features">
+                    <div class="feature-item">Paixão & Energia</div>
+                    <div class="feature-item">Força & Ousadia</div>
+                    <div class="feature-item">Impacto Visual</div>
+                </div>
+                <a href="./Red.html" class="theme-btn" onclick="loadTheme('red'); return false;">Explorar Vermelho</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadTheme(theme) {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                if (theme === 'gold') {
+                    window.location.href = './Gold.html';
+                } else if (theme === 'red') {
+                    window.location.href = './Red.html';
+                }
+            }, 300);
+        }
+
+        // Add touch feedback for mobile
+        if ('ontouchstart' in window) {
+            const cards = document.querySelectorAll('.theme-card');
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                card.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
